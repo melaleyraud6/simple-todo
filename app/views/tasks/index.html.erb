@@ -1,0 +1,58 @@
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <p class="display-4 pl-5">Simple To Do</p>
+  </div>
+</div>
+
+<%= form_with(model: @task, local:true, class: "js-form") do |f| %>
+  <div class="form-row pb-5">
+    <div class="form-group  col-6 offset-2 task-title">
+      <%= f.text_field :body, class: "form-control", id: "taskTitle", placeholder: "タスクのタイトル" %>
+      <div class="submit-btn">
+        <%= f.submit "タスクを作成", class: "btn btn-primary ml-4" %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div class="container  task ">
+  <div class="row  offset-2">
+    <h1>未完了</h1>
+  </div>
+  <% if @tasks_incomplete.length == 0 %>
+    <div class="row offset-2">
+      <p>タスクは登録されていません</p>
+    </div>
+  <% end %>
+  <% @tasks_incomplete.each do |incomplete| %>
+    <div class=" row incomplete-task offset-2 py-2 border-top border-bottom ">
+      <p class="col-7 ">
+        <%= incomplete.body %>
+      </p>
+      <%= link_to "編集", edit_task_path(incomplete.id) ,  class: "col-1 rounded btn btn-light border mr-2", id: "edit-task" %>
+      <%= link_to "削除", task_path(incomplete.id),method: :delete, class: "col-1 rounded btn btn-light border mr-2" %>
+      <%= link_to "完了する", complete_task_path(incomplete.id), class: "col-2 rounded btn btn-primary "%>
+    </div>
+    
+  <% end %>
+  
+</div>
+<div class="container  task ">
+  <div class="row  offset-2">
+    <h1>完了済み</h1>
+  </div>
+  <% if @tasks_complete.length == 0 %>
+    <div class="offset-2 complete-task">
+      <p>タスクは登録されていません</p>
+    </div>
+  <% end %>
+  <% @tasks_complete.each do |complete| %>
+    <div class=" row complete-task offset-2 py-2 border-top border-bottom">
+      <p class="col-7 ">
+        <%= complete.body %>
+      </p>
+      <%= link_to "編集", edit_task_path(complete.id), class: "col-1 rounded btn btn-light border mr-2 edit-btn" %>
+      <%= link_to "削除", task_path(complete.id),method: :delete, class: "col-1 rounded btn btn-light border mr-2" %>
+      <%= link_to "戻す", incomplete_task_path(complete.id), class: "col-2 rounded btn btn-primary " %>
+    </div>
+  <% end %>
+</div>
